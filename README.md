@@ -36,7 +36,6 @@ Web & UI/UX Developer with 10+ years of crafting user-centric digital experience
 
 ### 📊 Stats
 ![Pushpendra's GitHub Stats](https://github-readme-stats.vercel.app/api?username=ipushpendra&show_icons=true&theme=radical&hide_border=true)  
-![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=ipushpendra&layout=compact&theme=radical&hide_border=true)
 
 ---
 
