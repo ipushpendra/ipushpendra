@@ -50,10 +50,8 @@ Web & UI/UX Developer with 10+ years of crafting user-centric digital experience
 
 
 ### 📊 GitHub Stats
+<!-- GITHUB_STATS -->
 ![Pushpendra's GitHub Stats](https://github-readme-stats.vercel.app/api?username=ipushpendra&show_icons=true&theme=radical)
-
-### 🔥 Contribution Streak
-![GitHub Streak](https://streak-stats.demolab.com?user=ipushpendra&theme=radical&hide_border=true)
 
 ### 🏢 My Organizations
 [![AnchorUI](https://img.shields.io/badge/AnchorUI-000?style=for-the-badge&logo=github)](https://github.com/anchorui)
