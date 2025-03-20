@@ -14,7 +14,7 @@ jobs:
 
       - name: Fetch Latest Repositories (User + Organizations)
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
         run: |
           echo "Fetching repositories..."
           curl -H "Authorization: Bearer $GITHUB_TOKEN" -X POST -d '{"query": "query { viewer { repositories(first: 5, orderBy: {field: UPDATED_AT, direction: DESC}) { nodes { name url } } organizations(first: 2) { nodes { name repositories(first: 5, orderBy: {field: UPDATED_AT, direction: DESC}) { nodes { name url } } } } } }"}' https://api.github.com/graphql > repos.json
@@ -23,10 +23,12 @@ jobs:
           jq -r '.data.viewer.repositories.nodes + ([.data.viewer.organizations.nodes[].repositories.nodes] | add) | map("- [\(.name)](\(.url))") | .[]' repos.json > latest-repos.md
 
       - name: Update README
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
         run: |
           sed -i '/<!-- LATEST_REPOS -->/r latest-repos.md' README.md
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           git add README.md
           git commit -m "Update latest repositories in README" || exit 0
-          git push
+          git push https://ipushpendra:${GH_PAT}@github.com/ipushpendra/ipushpendra.git main
