@@ -29,11 +29,11 @@ jobs:
 
       - name: Update README.md
         run: |
-          # Replace LATEST_REPOS section
-          sed -i '/<!-- LATEST_REPOS_START -->/,/<!-- LATEST_REPOS_END -->/c\<!-- LATEST_REPOS_START -->\n'"$(cat latest-repos.md)"'\n<!-- LATEST_REPOS_END -->' README.md
+           # Replace LATEST_REPOS section
+          awk '/<!-- LATEST_REPOS_START -->/ {print; while(getline < "latest-repos.md") print; next} /<!-- LATEST_REPOS_END -->/' README.md > temp.md && mv temp.md README.md
           
           # Replace GITHUB_STATS section
-          sed -i '/<!-- GITHUB_STATS_START -->/,/<!-- GITHUB_STATS_END -->/c\<!-- GITHUB_STATS_START -->\n'"$(cat github-stats.md)"'\n<!-- GITHUB_STATS_END -->' README.md
+          awk '/<!-- GITHUB_STATS_START -->/ {print; while(getline < "github-stats.md") print; next} /<!-- GITHUB_STATS_END -->/' README.md > temp.md && mv temp.md README.md
           
           # Cleanup
           rm latest-repos.md github-stats.md
