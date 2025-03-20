@@ -23,33 +23,39 @@ jobs:
           echo "$RESPONSE" | jq -r '.data.viewer.repositories.nodes[] | "- [\(.name)](\(.url))"' > latest-repos.md
           echo "$RESPONSE" | jq -r '.data.viewer.organizations.nodes[] | .repositories.nodes[] | "- [\(.name)](\(.url))"' >> latest-repos.md
 
-            - name: Generate Fancy GitHub Stats Section
+      - name: Generate Fancy GitHub Stats Section
         env:
           GITHUB_USERNAME: ${{ github.repository_owner }}
         run: |
           echo "### 📊 GitHub Stats  " > github-stats.md
-          
-          # General Stats
           echo "![GitHub Stats](https://github-readme-stats.vercel.app/api?username=$GITHUB_USERNAME&show_icons=true&theme=radical&count_private=true)  " >> github-stats.md
+          echo "![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=$GITHUB_USERNAME&layout=compact&theme=radical)  " >> github-stats.md
+          echo "![GitHub Streak](https://github-readme-streak-stats.herokuapp.com/?user=$GITHUB_USERNAME&theme=radical)  " >> github-stats.md
+
+      - name: Fetch Organization Stats
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          echo "Fetching organization stats..."
           
-          # Top Languages - Enforce Cache Busting & Private Repo Inclusion
-          echo "![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=$GITHUB_USERNAME&layout=compact&theme=radical&count_private=true&langs_count=8)  " >> github-stats.md
-          
-          # GitHub Streak Stats - Fix URL
-          echo "![GitHub Streak](https://github-readme-streak-stats.herokuapp.com?user=$GITHUB_USERNAME&theme=radical)  " >> github-stats.md
+          ORG_STATS=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" -X POST -d '{"query": "query { viewer { organizations(first: 5) { nodes { name repositories { totalCount } } } } }"}' https://api.github.com/graphql)
+
+          echo "### 🏢 Organization Stats" > org-stats.md
+          echo "$ORG_STATS" | jq -r '.data.viewer.organizations.nodes[] | "**\(.name)** - Repositories: \(.repositories.totalCount)"' >> org-stats.md
 
       - name: Update README.md
         run: |
           sed -i '/<!-- LATEST_REPOS -->/r latest-repos.md' README.md
           sed -i '/<!-- GITHUB_STATS -->/r github-stats.md' README.md
-          rm latest-repos.md github-stats.md
+          sed -i '/<!-- ORG_STATS -->/r org-stats.md' README.md
+          rm latest-repos.md github-stats.md org-stats.md
 
       - name: Commit and Push Changes
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add README.md
-          git commit -m "📌 Update latest repositories & GitHub stats" || echo "No changes to commit"
+          git commit -m "📌 Update latest repositories, GitHub & Organization stats" || echo "No changes to commit"
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
