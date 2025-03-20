@@ -17,9 +17,37 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
         run: |
           echo "Fetching repositories..."
-          RESPONSE=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" -X POST -d '{"query": "query { viewer { repositories(first: 5, orderBy: {field: UPDATED_AT, direction: DESC}) { nodes { name url } } organizations(first: 5) { nodes { name repositories(first: 5, orderBy: {field: UPDATED_AT, direction: DESC}) { nodes { name url } } } } } }"}' https://api.github.com/graphql)
+          
+          # GraphQL Query for Personal + Org Repos
+          QUERY='{
+            "query": "query {
+              viewer {
+                repositories(first: 5, orderBy: {field: UPDATED_AT, direction: DESC}) {
+                  nodes { name url }
+                }
+                organizations(first: 5) {
+                  nodes {
+                    name
+                    repositories(first: 5, orderBy: {field: UPDATED_AT, direction: DESC}) {
+                      nodes { name url }
+                    }
+                  }
+                }
+              }
+            }"
+          }'
 
-          echo "$RESPONSE" | jq -r '.data.viewer.repositories.nodes[] | "- [\(.name)](\(.url))"' > latest-repos.md
+          # Fetch Data
+          RESPONSE=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
+                          -H "Content-Type: application/json" \
+                          -X POST -d "$QUERY" https://api.github.com/graphql)
+
+          # Extract Personal Repos
+          echo "## 📌 Latest Repositories" > latest-repos.md
+          echo "" >> latest-repos.md
+          echo "$RESPONSE" | jq -r '.data.viewer.repositories.nodes[] | "- [\(.name)](\(.url))"' >> latest-repos.md
+
+          # Extract Organization Repos
           echo "$RESPONSE" | jq -r '.data.viewer.organizations.nodes[] | .repositories.nodes[] | "- [\(.name)](\(.url))"' >> latest-repos.md
 
       - name: Update README.md
@@ -32,7 +60,7 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add README.md
-          git commit -m "📌 Update latest repositories"
+          git commit -m "📌 Update latest repositories" || echo "No changes to commit"
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
