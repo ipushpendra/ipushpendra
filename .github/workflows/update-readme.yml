@@ -1,0 +1,30 @@
+name: Update README
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Runs daily at midnight UTC
+  workflow_dispatch: # Allows manual trigger
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Fetch Latest Repositories
+        uses: gautamkrishnar/blog-post-workflow@1.9.0
+        with:
+          max_post_count: "5"
+          feed_list: "https://api.github.com/users/ipushpendra/repos?sort=pushed"
+          template: "- **[{{title}}]({{link}})**"
+          section_name: "📌 Latest Repositories"
+
+      - name: Commit and Push Changes
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add README.md
+          git commit -m "Updated README with latest repositories" || echo "No changes to commit"
+          git push
