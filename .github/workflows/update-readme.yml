@@ -27,7 +27,7 @@ jobs:
         env:
           GITHUB_USERNAME: ${{ github.repository_owner }}
         run: |
-          echo "**📊 GitHub Stats**  " > github-stats.md
+          echo "###📊 GitHub Stats" > github-stats.md
           echo "![GitHub Stats](https://github-readme-stats.vercel.app/api?username=$GITHUB_USERNAME&show_icons=true&theme=radical&count_private=true)  " >> github-stats.md
           echo "![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=$GITHUB_USERNAME&layout=compact&theme=radical)  " >> github-stats.md
           echo "![GitHub Streak](https://github-readme-streak-stats.herokuapp.com/?user=$GITHUB_USERNAME&theme=radical)  " >> github-stats.md
