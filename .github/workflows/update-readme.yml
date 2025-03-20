@@ -23,14 +23,20 @@ jobs:
           echo "$RESPONSE" | jq -r '.data.viewer.repositories.nodes[] | "- [\(.name)](\(.url))"' > latest-repos.md
           echo "$RESPONSE" | jq -r '.data.viewer.organizations.nodes[] | .repositories.nodes[] | "- [\(.name)](\(.url))"' >> latest-repos.md
 
-      - name: Generate Fancy GitHub Stats Section
+            - name: Generate Fancy GitHub Stats Section
         env:
           GITHUB_USERNAME: ${{ github.repository_owner }}
         run: |
-          echo "###📊 GitHub Stats" > github-stats.md
+          echo "### 📊 GitHub Stats  " > github-stats.md
+          
+          # General Stats
           echo "![GitHub Stats](https://github-readme-stats.vercel.app/api?username=$GITHUB_USERNAME&show_icons=true&theme=radical&count_private=true)  " >> github-stats.md
-          echo "![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=$GITHUB_USERNAME&layout=compact&theme=radical)  " >> github-stats.md
-          echo "![GitHub Streak](https://github-readme-streak-stats.herokuapp.com/?user=$GITHUB_USERNAME&theme=radical)  " >> github-stats.md
+          
+          # Top Languages - Enforce Cache Busting & Private Repo Inclusion
+          echo "![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=$GITHUB_USERNAME&layout=compact&theme=radical&count_private=true&langs_count=8)  " >> github-stats.md
+          
+          # GitHub Streak Stats - Fix URL
+          echo "![GitHub Streak](https://github-readme-streak-stats.herokuapp.com?user=$GITHUB_USERNAME&theme=radical)  " >> github-stats.md
 
       - name: Update README.md
         run: |

@@ -53,14 +53,31 @@ Web & UI/UX Developer with 10+ years of crafting user-centric digital experience
 - [ui](https://github.com/anchorui/ui)
 - [demo-repository](https://github.com/anchorui/demo-repository)
 - [x-analytics](https://github.com/ninexgo/x-analytics)
+- [ipushpendra](https://github.com/ipushpendra/ipushpendra)
+- [ui](https://github.com/anchorui/ui)
+- [Algorithms](https://github.com/winit30/Algorithms)
+- [base-ui](https://github.com/ipushpendra/base-ui)
+- [edupen](https://github.com/ipushpendra/edupen)
+- [ui](https://github.com/anchorui/ui)
+- [demo-repository](https://github.com/anchorui/demo-repository)
+- [x-analytics](https://github.com/ninexgo/x-analytics)
+- [ipushpendra](https://github.com/ipushpendra/ipushpendra)
+- [ui](https://github.com/anchorui/ui)
+- [Algorithms](https://github.com/winit30/Algorithms)
+- [base-ui](https://github.com/ipushpendra/base-ui)
+- [edupen](https://github.com/ipushpendra/edupen)
+- [ui](https://github.com/anchorui/ui)
+- [demo-repository](https://github.com/anchorui/demo-repository)
+- [x-analytics](https://github.com/ninexgo/x-analytics)
 
 ---
 
 <!-- GITHUB_STATS -->
-###📊 GitHub Stats
 ![GitHub Stats](https://github-readme-stats.vercel.app/api?username=ipushpendra&show_icons=true&theme=radical&count_private=true)  
 ![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=ipushpendra&layout=compact&theme=radical)  
 ![GitHub Streak](https://github-readme-streak-stats.herokuapp.com/?user=ipushpendra&theme=radical)  
+
+<!-- ORG_STATS -->
 
 ### 🏢 My Organizations
 [![AnchorUI](https://img.shields.io/badge/AnchorUI-000?style=for-the-badge&logo=github)](https://github.com/anchorui)
